@@ -289,15 +289,19 @@
         }
     };
 
+    const isDateAndTimeValid = (date: Date): boolean => {
+      return validateDate(date) && isValidTime(date)
+    }
+
     const validateBeforeEmit = () => {
         const date = internalModelValue.value;
         if (!date) return true;
-        if (!Array.isArray(date) && validateDate(date)) return true;
+        if (!Array.isArray(date) && isDateAndTimeValid(date)) return true;
         if (Array.isArray(date)) {
-            if (date.length === 2 && validateDate(date[0]) && validateDate(date[1])) {
+            if (date.length === 2 && isDateAndTimeValid(date[0]) && isDateAndTimeValid(date[1])) {
                 return true;
             }
-            if (props.partialRange && !props.timePicker) return validateDate(date[0]);
+            if (props.partialRange && !props.timePicker) return isDateAndTimeValid(date[0]);
             return false;
         }
         return false;
